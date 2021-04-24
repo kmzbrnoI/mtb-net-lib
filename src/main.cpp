@@ -2,6 +2,7 @@
 #include "main.h"
 #include "events.h"
 #include "modules/uni.h"
+#include "errors.h"
 
 namespace MtbNetLib {
 
@@ -47,6 +48,11 @@ void LibMain::daemonConnected() {
 
 void LibMain::daemonDisconnected() {
 	log("Disconnected from daemon server", LogLevel::Info);
+
+	if (state.rcs == RcsState::opening) {
+		events.call(events.onError, RCS_NOT_OPENED, 0,
+					"Unable to connect to MTB daemon server");
+	}
 
 	state.rcs = RcsState::closed;
 	mtbusb.connected = false;
