@@ -7,7 +7,9 @@
 
 namespace MtbNetLib {
 
-MtbUni::MtbUni(const QJsonObject& json) : MtbModule(json) {}
+MtbUni::MtbUni(const QJsonObject& json) : MtbModule(json) {
+	this->daemonGotInfo(json);
+}
 
 /* Daemon events ------------------------------------------------------------ */
 
@@ -40,6 +42,7 @@ void MtbUni::daemonOutputsChanged(const QJsonObject& json) {
 void MtbUni::daemonOutputsSet(const QJsonObject& json) {
 	for (const auto& key : json.keys())
 		this->outputsConfirmed[key.toInt()] = json[key].toObject();
+	events.call(events.onOutputChanged, this->address);
 }
 
 /* RCS events --------------------------------------------------------------- */
@@ -68,7 +71,14 @@ int MtbUni::rcsSetOutput(unsigned int port, int state) {
 	if (this->state != "active")
 		return RCS_MODULE_FAILED;
 
-	QString portType = this->config["outputsSafe"].toArray()[port].toObject()["type"].toString();
+	if (this->outputsConfirmed[port]["value"].toInt() == state)
+		return 0;
+
+	QJsonArray outputsSafe = this->config["outputsSafe"].toArray();
+	if (port >= outputsSafe.size())
+		return RCS_PORT_INVALID_NUMBER;
+
+	QString portType = outputsSafe[port].toObject()["type"].toString();
 	if ((state > 1) && (portType == "plain"))
 		portType = "flicker";
 
@@ -104,7 +114,11 @@ int MtbUni::rcsGetOutputType(unsigned int port) {
 	if (port > UNI_IO_CNT)
 		return RCS_PORT_INVALID_NUMBER;
 
-	const QString& portType = this->config["outputsSafe"].toArray()[port].toObject()["type"].toString();
+	QJsonArray outputsSafe = this->config["outputsSafe"].toArray();
+	if (port >= outputsSafe.size())
+		return RCS_PORT_INVALID_NUMBER;
+
+	const QString& portType = outputsSafe[port].toObject()["type"].toString();
 	if (portType == "s-com")
 		return static_cast<int>(RcsPortOutputType::oScom);
 	return static_cast<int>(RcsPortOutputType::oPlain);

@@ -44,7 +44,7 @@ public:
 
 	virtual void daemonGotInfo(const QJsonObject& json) {
 		this->address = json["address"].toInt();
-		this->state = json["state"].toInt();
+		this->state = json["state"].toString();
 		this->name = json["name"].toString();
 		this->type = static_cast<MtbModuleType>(json["type_code"].toInt());
 		this->type_str = json["type"].toString();

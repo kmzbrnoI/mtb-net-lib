@@ -81,15 +81,16 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 		this->daemonReceivedMtbUsb(json);
 
 	} else if (command == "module") {
-		size_t addr = json["module"].toObject()["address"].toInt();
+		QJsonObject jsonModule = json["module"].toObject();
+		size_t addr = jsonModule["address"].toInt();
 		const QString& type = json["module"].toObject()["type"].toString();
 		if (modules[addr] == nullptr) {
 			if (type.startsWith("MTB-UNI"))
-				modules[addr] = std::make_unique<MtbUni>(json);
+				modules[addr] = std::make_unique<MtbUni>(jsonModule);
 			else
-				modules[addr] = std::make_unique<MtbModule>(json);
+				modules[addr] = std::make_unique<MtbModule>(jsonModule);
 		} else {
-			modules[addr]->daemonGotInfo(json);
+			modules[addr]->daemonGotInfo(jsonModule);
 		}
 
 	} else if (command == "modules") {
@@ -121,13 +122,13 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 		const QJsonObject& moduleInputsChanged = json["module_inputs_changed"].toObject();
 		size_t addr = moduleInputsChanged["address"].toInt();
 		if (modules[addr] != nullptr)
-			modules[addr]->daemonInputsChanged(moduleInputsChanged);
+			modules[addr]->daemonInputsChanged(moduleInputsChanged["inputs"].toObject());
 
 	} else if (command == "module_outputs_changed") {
 		const QJsonObject& moduleOutputsChanged = json["module_outputs_changed"].toObject();
 		size_t addr = moduleOutputsChanged["address"].toInt();
 		if (modules[addr] != nullptr)
-			modules[addr]->daemonOutputsChanged(moduleOutputsChanged);
+			modules[addr]->daemonOutputsChanged(moduleOutputsChanged["outputs"].toObject());
 
 	} else if (command == "module_set_outputs") {
 		const QJsonObject& outputs = json["outputs"].toObject();
@@ -164,7 +165,7 @@ void LibMain::daemonReceivedMtbUsb(const QJsonObject& json) {
 			daemonClient.send(QJsonObject{
 				{"command", "modules"},
 				{"type", "request"},
-				{"satte", true},
+				{"state", true},
 			});
 		}
 	}
