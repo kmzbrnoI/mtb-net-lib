@@ -8,7 +8,8 @@ SOURCES += \
 	src/settings.cpp \
 	src/events.cpp \
 	src/client.cpp \
-	src/modules/uni.cpp
+	src/modules/uni.cpp \
+	src/lib-api.cpp
 
 HEADERS += \
 	src/main.h \

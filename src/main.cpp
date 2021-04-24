@@ -3,8 +3,10 @@
 namespace MtbNetLib {
 
 AppThread main_thread;
-State state;
+MtbUsb mtbusb;
 std::array<std::unique_ptr<MtbModule>, MAX_MODULES> modules;
 DaemonClient daemonClient;
+Settings settings;
+State state;
 
 }; // MtbNetLib

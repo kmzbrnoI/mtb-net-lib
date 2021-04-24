@@ -2,6 +2,7 @@
 #include <QJsonObject>
 #include "client.h"
 #include "main.h"
+#include "events.h"
 
 namespace MtbNetLib {
 
@@ -27,20 +28,24 @@ bool DaemonClient::connected() const {
 }
 
 void DaemonClient::clientConnected() {
-	log("Connected to server.", LogLevel::Info);
+	log("Connected to daemon server.", LogLevel::Info);
 }
 
 void DaemonClient::clientDisconnected() {
-	log("Client disconnected", LogLevel::Info);
+	log("Disconnected from daemon server", LogLevel::Info);
 	this->m_tKeepAlive.stop();
 	// client->deleteLater();
 
+	state.rcs = RcsState::closed;
+	mtbusb.connected = false;
 	for (size_t i = 0; i < MAX_MODULES; i++) {
 		if (modules[i] != nullptr) {
 			modules[i]->resetState();
 			modules[i]->resetConfig();
 		}
 	}
+
+	events.call(events.afterClose);
 }
 
 void DaemonClient::clientReadyRead() {

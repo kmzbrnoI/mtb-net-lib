@@ -8,6 +8,16 @@ namespace MtbNetLib {
 
 constexpr size_t MAX_MODULES = 256;
 
+enum RcsPortInputType {
+	iPlain = 0,
+	iIr = 1,
+};
+
+enum RcsPortOutputType {
+	oPlain = 0,
+	oScom = 1,
+};
+
 enum MtbModuleType {
 	Uknown = 0x00,
 	Univ2ir = 0x10,
@@ -40,10 +50,13 @@ public:
 	virtual int rcsGetOutput(unsigned int port) { (void)port; return 0; }
 	virtual int rcsSetOutput(unsigned int port, int state) { (void)port; (void)state; return 0; }
 	virtual int rcsGetInputType(unsigned int port) { (void)port; return 0; }
-	virtual int rcsGetOutputsType(unsigned int port) { (void)port; return 0; }
+	virtual int rcsGetOutputType(unsigned int port) { (void)port; return 0; }
 
-	virtual void resetConfig();
-	virtual void resetState();
+	virtual void resetConfig() {}
+	virtual void resetState() {}
+
+	virtual size_t inputsCount() const { return 0; }
+	virtual size_t outputsCount() const { return 0; }
 };
 
 }; // namespace MtbNetLib

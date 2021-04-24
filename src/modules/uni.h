@@ -26,10 +26,13 @@ public:
 	int rcsGetOutput(unsigned int port) override;
 	int rcsSetOutput(unsigned int port, int state) override;
 	int rcsGetInputType(unsigned int port) override;
-	int rcsGetOutputsType(unsigned int port) override;
+	int rcsGetOutputType(unsigned int port) override;
 
 	void resetConfig() override;
 	void resetState() override;
+
+	size_t inputsCount() const override;
+	size_t outputsCount() const override;
 };
 
 }; // namespace MtbNetLib

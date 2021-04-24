@@ -3,12 +3,19 @@
 
 /* This file deafines prototypes of library API functions. */
 
+#include <array>
 #include <QtCore/QtGlobal>
 
 #include "lib-api-common-def.h"
 #include "events.h"
 
 namespace MtbNetLib {
+
+constexpr std::array<unsigned int, 1> API_SUPPORTED_VERSIONS {
+    0x0301, // v1.3
+};
+
+extern unsigned int rcs_api_version;
 
 extern "C" {
 
@@ -18,9 +25,6 @@ Q_DECL_EXPORT void CALL_CONV SetConfigFileName(char16_t *filename);
 
 Q_DECL_EXPORT void CALL_CONV SetLogLevel(unsigned int loglevel);
 Q_DECL_EXPORT unsigned int CALL_CONV GetLogLevel();
-
-Q_DECL_EXPORT void CALL_CONV ShowConfigDialog();
-Q_DECL_EXPORT void CALL_CONV HideConfigDialog();
 
 Q_DECL_EXPORT int CALL_CONV Open();
 Q_DECL_EXPORT int CALL_CONV OpenDevice(char16_t *device, bool persist);
