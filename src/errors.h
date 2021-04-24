@@ -1,6 +1,8 @@
 #ifndef ERRORS_H
 #define ERRORS_H
 
+#include <cstdint>
+
 constexpr size_t RCS_GENERAL_EXCEPTION = 1000;
 constexpr size_t RCS_FILE_CANNOT_ACCESS = 1010;
 constexpr size_t RCS_FILE_DEVICE_OPENED = 1011;

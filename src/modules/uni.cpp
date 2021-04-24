@@ -88,7 +88,7 @@ int MtbUni::rcsSetOutput(unsigned int port, int state) {
 		return 0;
 
 	QJsonArray outputsSafe = this->config["outputsSafe"].toArray();
-	if (port >= outputsSafe.size())
+	if (static_cast<int>(port) >= outputsSafe.size())
 		return RCS_PORT_INVALID_NUMBER;
 
 	QString portType = outputsSafe[port].toObject()["type"].toString();
@@ -128,7 +128,7 @@ int MtbUni::rcsGetOutputType(unsigned int port) {
 		return RCS_PORT_INVALID_NUMBER;
 
 	QJsonArray outputsSafe = this->config["outputsSafe"].toArray();
-	if (port >= outputsSafe.size())
+	if (static_cast<int>(port) >= outputsSafe.size())
 		return RCS_PORT_INVALID_NUMBER;
 
 	const QString& portType = outputsSafe[port].toObject()["type"].toString();
