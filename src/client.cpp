@@ -1,5 +1,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QHostAddress>
 #include "client.h"
 #include "main.h"
 
@@ -15,6 +16,7 @@ DaemonClient::DaemonClient(QObject *parent) : QObject(parent) {
 }
 
 void DaemonClient::connect(const QHostAddress &addr, quint16 port, bool keepAlive) {
+	log("Connecting to MTB daemon server: "+addr.toString()+":"+QString::number(port)+" ...", LogLevel::Info);
 	this->m_socket.connectToHost(addr, port);
 	if (keepAlive)
 		this->m_tKeepAlive.start(CLIENT_KEEP_ALIVE_SEND_PERIOD_MS);
@@ -46,7 +48,7 @@ void DaemonClient::clientErrorOccured(QAbstractSocket::SocketError) {
 }
 
 void DaemonClient::clientReadyRead() {
-	if (this->m_socket.canReadLine()) {
+	while (this->m_socket.canReadLine()) {
 		QByteArray data = this->m_socket.readLine();
 		if (data.size() > 0) {
 			QJsonObject json = QJsonDocument::fromJson(data).object();
@@ -58,8 +60,9 @@ void DaemonClient::clientReadyRead() {
 void DaemonClient::send(const QJsonObject &jsonObj) {
 	if (!this->connected())
 		return; // TODO: throw exception?
-	this->m_socket.write(QJsonDocument(jsonObj).toJson(QJsonDocument::Compact));
-	this->m_socket.write("\n");
+	QByteArray data = QJsonDocument(jsonObj).toJson(QJsonDocument::Compact);
+	data.push_back("\n\n");
+	this->m_socket.write(data);
 }
 
 void DaemonClient::tKeepAliveTick() {
