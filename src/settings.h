@@ -10,25 +10,11 @@
 using Config = std::map<QString, std::map<QString, QVariant>>;
 
 const Config DEFAULTS {
-	{"XN", {
-		{"port", "/dev/ttyUSB0"},
-		{"baudrate", 19200},
-		{"flowcontrol", 1},
-		{"loglevel", 1},
-		{"interface", "LI101"},
+	{"server", {
+		{"host", "127.0.0.1"},
+		{"port", "3841"},
+		{"keepAlive", true},
 	}},
-	{"global", {
-		{"onlyOneActive", true},
-		{"addrRange", "basic"},
-		{"resetSignals", false},
-		{"mockInputs", false},
-		{"forbid00Output", true},
-		{"disableSetOutputOff", false},
-	}},
-	{"modules", {
-		{"active-in", "1-32,64-72"},
-		{"active-out", "1-28,70-92"},
-	}}
 };
 
 class Settings {

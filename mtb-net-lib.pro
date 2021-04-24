@@ -4,18 +4,20 @@ CONFIG += console
 CONFIG -= app_bundle
 
 SOURCES += \
-	src/main.cpp
-	src/lib-api.cpp
-	src/settings.cpp
+	src/main.cpp \
+	src/settings.cpp \
+	src/events.cpp \
+	src/client.cpp
 
 HEADERS += \
-	src/main.h
-	src/lib-api-common-def.h
-	src/lib-api.h
-	src/errors.h
-	src/events.h
-	src/util.h
-	src/settings.h
+	src/main.h \
+	src/lib-api-common-def.h \
+	src/lib-api.h \
+	src/errors.h \
+	src/events.h \
+	src/util.h \
+	src/settings.h \
+	src/client.h
 
 CONFIG += c++17 dll
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -std=c++17
