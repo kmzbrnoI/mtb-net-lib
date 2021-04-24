@@ -1,11 +1,11 @@
 #include "lib-api.h"
 #include "errors.h"
-#include "rcs-xn.h"
+#include "main.h"
 #include "util.h"
 
 /* This file deafines all library exported API functions. */
 
-namespace RcsXn {
+namespace MtbNetLib {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Open/close
