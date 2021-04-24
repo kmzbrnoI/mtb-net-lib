@@ -3,6 +3,8 @@
 
 #include <QTcpSocket>
 #include <QJsonObject>
+#include "../events.h"
+#include "../errors.h"
 
 namespace MtbNetLib {
 
@@ -43,6 +45,8 @@ public:
 	virtual ~MtbModule() = default;
 
 	virtual void daemonGotInfo(const QJsonObject& json) {
+		QString oldState = this->state;
+
 		this->address = json["address"].toInt();
 		this->state = json["state"].toString();
 		this->name = json["name"].toString();
@@ -52,6 +56,17 @@ public:
 		this->bootlaoder_error = json["bootloader_error"].toBool();
 		this->fw_version = json["firmware_version"].toString();
 		this->proto_version = json["protocol_version"].toString();
+
+		if ((oldState != "active") && (this->state == "active")) {
+			events.call(events.onError, RCS_MODULE_RESTORED, this->address, "Module activated");
+			events.call(events.onInputChanged, this->address);
+			events.call(events.onOutputChanged, this->address);
+		}
+		if ((oldState == "active") && (this->state != "active")) {
+			events.call(events.onError, RCS_MODULE_FAILED, this->address, "Module failed");
+			events.call(events.onInputChanged, this->address);
+			events.call(events.onOutputChanged, this->address);
+		}
 	}
 
 	virtual void daemonInputsChanged(const QJsonObject&) {}

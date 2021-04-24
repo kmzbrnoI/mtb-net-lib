@@ -14,11 +14,16 @@ MtbUni::MtbUni(const QJsonObject& json) : MtbModule(json) {
 /* Daemon events ------------------------------------------------------------ */
 
 void MtbUni::daemonGotInfo(const QJsonObject& json) {
+	QString oldState = this->state;
 	MtbModule::daemonGotInfo(json);
 	const QJsonObject& uniJson = json[this->type_str].toObject();
 	this->ir = uniJson["ir"].toBool();
 	if (uniJson.contains("config"))
 		this->config = uniJson["config"].toObject();
+	if ((oldState != "active") && (oldState != "") && (this->state == "active")) {
+		// Restore state of outputs
+		this->restoreOutputs();
+	}
 	if (uniJson.contains("state")) {
 		const QJsonObject& state = uniJson["state"].toObject();
 		const QJsonObject& outputs = state["outputs"].toObject();
@@ -132,6 +137,19 @@ void MtbUni::resetState() {
 	this->inputs = 0;
 	for (size_t i = 0; i < UNI_IO_CNT; i++)
 		this->outputsConfirmed[i] = {};
+}
+
+void MtbUni::restoreOutputs() const {
+	QJsonObject outputs;
+	for (size_t i = 0; i < UNI_IO_CNT; i++)
+		outputs[QString::number(i)] = this->outputsConfirmed[i];
+
+	daemonClient.send(QJsonObject{
+		{"command", "module_set_outputs"},
+		{"type", "request"},
+		{"address", this->address},
+		{"outputs", outputs},
+	});
 }
 
 size_t MtbUni::inputsCount() const { return UNI_IO_CNT; }

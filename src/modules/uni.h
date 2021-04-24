@@ -8,6 +8,9 @@ namespace MtbNetLib {
 constexpr size_t UNI_IO_CNT = 16;
 
 class MtbUni : public MtbModule {
+private:
+	void restoreOutputs() const;
+
 public:
 	uint16_t inputs;
 	std::array<QJsonObject, UNI_IO_CNT> outputsConfirmed;
