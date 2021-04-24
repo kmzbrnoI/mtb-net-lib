@@ -56,12 +56,8 @@ void LibMain::daemonDisconnected() {
 
 	state.rcs = RcsState::closed;
 	mtbusb.connected = false;
-	for (size_t i = 0; i < MAX_MODULES; i++) {
-		if (modules[i] != nullptr) {
-			modules[i]->resetState();
-			modules[i]->resetConfig();
-		}
-	}
+	for (size_t i = 0; i < MAX_MODULES; i++)
+		modules[i] = nullptr;
 
 	events.call(events.afterClose);
 }
@@ -86,12 +82,11 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 		const QString& type = json["module"].toObject()["type"].toString();
 		if (modules[addr] == nullptr) {
 			if (type.startsWith("MTB-UNI"))
-				modules[addr] = std::make_unique<MtbUni>(jsonModule);
+				modules[addr] = std::make_unique<MtbUni>();
 			else
-				modules[addr] = std::make_unique<MtbModule>(jsonModule);
-		} else {
-			modules[addr]->daemonGotInfo(jsonModule);
+				modules[addr] = std::make_unique<MtbModule>();
 		}
+		modules[addr]->daemonGotInfo(jsonModule);
 
 	} else if (command == "modules") {
 		const QJsonObject& jsonModules = json["modules"].toObject();
@@ -101,12 +96,11 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 				if (modules[i] == nullptr) {
 					const QString& type = jsonModule["type"].toString();
 					if (type.startsWith("MTB-UNI"))
-						modules[i] = std::make_unique<MtbUni>(jsonModule);
+						modules[i] = std::make_unique<MtbUni>();
 					else
-						modules[i] = std::make_unique<MtbModule>(jsonModule);
-				} else {
-					modules[i]->daemonGotInfo(jsonModule);
+						modules[i] = std::make_unique<MtbModule>();
 				}
+				modules[i]->daemonGotInfo(jsonModule);
 			} else  if (modules[i] != nullptr) {
 				modules[i] = nullptr; // TODO: send module failed event?
 			}

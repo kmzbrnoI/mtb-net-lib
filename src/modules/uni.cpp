@@ -7,10 +7,6 @@
 
 namespace MtbNetLib {
 
-MtbUni::MtbUni(const QJsonObject& json) : MtbModule(json) {
-	this->daemonGotInfo(json);
-}
-
 /* Daemon events ------------------------------------------------------------ */
 
 void MtbUni::daemonGotInfo(const QJsonObject& json) {
@@ -30,6 +26,18 @@ void MtbUni::daemonGotInfo(const QJsonObject& json) {
 		for (const auto& key : outputs.keys())
 			this->outputsConfirmed[key.toInt()] = outputs[key].toObject();
 		this->inputs = state["inputsPacked"].toInt();
+	}
+
+	// Must be here after setting all the attributes, because server can directly ask for this information
+	if ((oldState != "active") && (this->state == "active")) {
+		events.call(events.onError, RCS_MODULE_RESTORED, this->address, "Module activated");
+		events.call(events.onInputChanged, this->address);
+		events.call(events.onOutputChanged, this->address);
+	}
+	if ((oldState == "active") && (this->state != "active")) {
+		events.call(events.onError, RCS_MODULE_FAILED, this->address, "Module failed");
+		events.call(events.onInputChanged, this->address);
+		events.call(events.onOutputChanged, this->address);
 	}
 }
 
