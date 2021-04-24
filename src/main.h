@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <QCoreApplication>
+#include <QObject>
 #include <memory>
 #include "modules/module.h"
 #include "client.h"
@@ -52,6 +53,21 @@ struct AppThread {
 			app->exec();
 		}
 	}
+};
+
+class LibMain : public QObject {
+	Q_OBJECT
+
+private:
+	void daemonReceivedMtbUsb(const QJsonObject&);
+
+private slots:
+	void daemonConnected();
+	void daemonDisconnected();
+	void daemonReceived(const QJsonObject&);
+
+public:
+	LibMain();
 
 };
 
@@ -61,6 +77,7 @@ extern std::array<std::unique_ptr<MtbModule>, MAX_MODULES> modules;
 extern DaemonClient daemonClient;
 extern Settings settings;
 extern State state;
+extern LibMain libMain;
 
 }; // namespace MtbNetLib
 

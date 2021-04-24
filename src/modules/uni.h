@@ -14,7 +14,7 @@ public:
 	QJsonObject config;
 	bool ir;
 
-	MtbUni(uint8_t addr);
+	MtbUni(const QJsonObject&);
 	~MtbUni() override = default;
 
 	void daemonGotInfo(const QJsonObject&) override;

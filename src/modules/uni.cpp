@@ -5,11 +5,23 @@
 
 namespace MtbNetLib {
 
-MtbUni::MtbUni(uint8_t addr) : MtbModule(addr) {}
+MtbUni::MtbUni(const QJsonObject& json) : MtbModule(json) {}
 
 /* Daemon events ------------------------------------------------------------ */
 
-void MtbUni::daemonGotInfo(const QJsonObject&) {
+void MtbUni::daemonGotInfo(const QJsonObject& json) {
+	MtbModule::daemonGotInfo(json);
+	const QJsonObject& uniJson = json[this->type_str].toObject();
+	this->ir = uniJson["ir"].toBool();
+	if (uniJson.contains("config"))
+		this->config = uniJson["config"].toObject();
+	if (uniJson.contains("state")) {
+		const QJsonObject& state = uniJson["state"].toObject();
+		const QJsonObject& outputs = state["outputs"].toObject();
+		for (const auto& key : outputs.keys())
+			this->outputsConfirmed[key.toInt()] = outputs[key].toObject();
+		this->inputs = state["inputsPacked"].toInt();
+	}
 }
 
 void MtbUni::daemonInputsChanged(const QJsonObject&) {

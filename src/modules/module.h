@@ -38,10 +38,22 @@ public:
 	QString fw_version;
 	QString proto_version;
 
-	MtbModule(uint8_t addr) : address(addr) {};
+	MtbModule(const QJsonObject& json) { this->daemonGotInfo(json); };
+
 	virtual ~MtbModule() = default;
 
-	virtual void daemonGotInfo(const QJsonObject&) {}
+	virtual void daemonGotInfo(const QJsonObject& json) {
+		this->address = json["address"].toInt();
+		this->state = json["state"].toInt();
+		this->name = json["name"].toString();
+		this->type = static_cast<MtbModuleType>(json["type_code"].toInt());
+		this->type_str = json["type"].toString();
+		this->bootloader_int = json["bootloader_intentional"].toBool();
+		this->bootlaoder_error = json["bootloader_error"].toBool();
+		this->fw_version = json["firmware_version"].toString();
+		this->proto_version = json["protocol_version"].toString();
+	}
+
 	virtual void daemonInputsChanged(const QJsonObject&) {}
 	virtual void daemonOutputsChanged(const QJsonObject&) {}
 	virtual void daemonOutputsSet(const QJsonObject&) {}

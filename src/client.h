@@ -25,6 +25,7 @@ private slots:
 	void clientDisconnected();
 	void clientReadyRead();
 	void tKeepAliveTick();
+	void clientErrorOccured(QAbstractSocket::SocketError);
 
 private:
 	QTcpSocket m_socket;
@@ -32,6 +33,8 @@ private:
 
 signals:
 	void jsonReceived(const QJsonObject&);
+	void onConnected();
+	void onDisconnected();
 
 };
 

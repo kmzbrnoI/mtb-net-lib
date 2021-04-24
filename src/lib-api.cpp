@@ -1,3 +1,4 @@
+#include <QHostAddress>
 #include "lib-api.h"
 #include "errors.h"
 #include "main.h"
@@ -13,48 +14,86 @@ unsigned int rcs_api_version = 0;
 // Open/close
 
 int Open() {
+	if (state.rcs != RcsState::closed)
+		return RCS_ALREADY_OPENNED;
+
 	try {
-		return 0; // TODO
-	} catch (...) { return RCS_GENERAL_EXCEPTION; }
+		events.call(events.beforeOpen);
+
+		state.rcs = RcsState::opening;
+		daemonClient.connect(
+			QHostAddress(settings["server"]["host"].toString()),
+			settings["server"]["port"].toInt(),
+			settings["server"]["keepAlive"].toBool()
+		);
+		// Potential error is reporter later
+		return 0;
+	} catch (...) {
+		state.rcs = RcsState::closed;
+		return RCS_GENERAL_EXCEPTION;
+	}
 }
 
 int OpenDevice(char16_t *device, bool persist) {
+	// Intentionally unimplemented
+	(void)device;
+	(void)persist;
 	try {
-		return 0; // TODO
+		return 0;
 	} catch (...) { return RCS_GENERAL_EXCEPTION; }
 }
 
 int Close() {
+	if (state.rcs == RcsState::closed)
+		return RCS_NOT_OPENED;
+
 	try {
-		return 0; // TODO
+		events.call(events.beforeClose);
+		daemonClient.disconnect();
+		return 0;
 	} catch (...) { return RCS_GENERAL_EXCEPTION; }
 }
 
 bool Opened() {
-	try {
-		return 0; // TODO
-	} catch (...) { return RCS_GENERAL_EXCEPTION; }
+	return state.rcs >= RcsState::stopped;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Start/stop
 
 int Start() {
+	if (state.rcs == RcsState::started)
+		return RCS_ALREADY_STARTED;
+	if (state.rcs != RcsState::stopped)
+		return RCS_NOT_OPENED;
+	if (!mtbusb.connected) {
+		log("Unable to start communication, MTB daemon disconnected from MTB-USB", LogLevel::Error);
+		return RCS_NOT_OPENED;
+	}
+
 	try {
-		return 0; // TODO
+		events.call(events.beforeStart);
+		state.rcs = RcsState::started;
+		events.call(events.afterStart);
+		events.call(events.onScanned);
+		return 0;
 	} catch (...) { return RCS_GENERAL_EXCEPTION; }
 }
 
 int Stop() {
+	if (state.rcs != RcsState::started)
+		return RCS_NOT_STARTED;
+
 	try {
-		return 0; // TODO
+		events.call(events.beforeStop);
+		state.rcs = RcsState::stopped;
+		events.call(events.afterStop);
+		return 0;
 	} catch (...) { return RCS_GENERAL_EXCEPTION; }
 }
 
 bool Started() {
-	try {
-		return 0; // TODO
-	} catch (...) { return RCS_GENERAL_EXCEPTION; }
+	return state.rcs == RcsState::started;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,6 @@
 #include <QJsonObject>
 #include "client.h"
 #include "main.h"
-#include "events.h"
 
 namespace MtbNetLib {
 
@@ -11,6 +10,8 @@ DaemonClient::DaemonClient(QObject *parent) : QObject(parent) {
 	QObject::connect(&m_socket, SIGNAL(connected()), this, SLOT(clientConnected()));
 	QObject::connect(&m_socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
 	QObject::connect(&m_socket, SIGNAL(readyRead()), this, SLOT(clientReadyRead()));
+	QObject::connect(&m_socket, SIGNAL(errorOccured(QAbstractSocket::SocketError)),
+	                 this, SLOT(clientErrorOccured(QAbstractSocket::SocketError)));
 }
 
 void DaemonClient::connect(const QHostAddress &addr, quint16 port, bool keepAlive) {
@@ -28,24 +29,20 @@ bool DaemonClient::connected() const {
 }
 
 void DaemonClient::clientConnected() {
-	log("Connected to daemon server.", LogLevel::Info);
+	onConnected();
 }
 
 void DaemonClient::clientDisconnected() {
-	log("Disconnected from daemon server", LogLevel::Info);
 	this->m_tKeepAlive.stop();
 	// client->deleteLater();
+	onDisconnected();
+}
 
-	state.rcs = RcsState::closed;
-	mtbusb.connected = false;
-	for (size_t i = 0; i < MAX_MODULES; i++) {
-		if (modules[i] != nullptr) {
-			modules[i]->resetState();
-			modules[i]->resetConfig();
-		}
-	}
-
-	events.call(events.afterClose);
+void DaemonClient::clientErrorOccured(QAbstractSocket::SocketError) {
+	log("Daemon server socket error occured: "+m_socket.errorString(), LogLevel::Error);
+	if (this->connected())
+		this->disconnect();
+	onDisconnected();
 }
 
 void DaemonClient::clientReadyRead() {
