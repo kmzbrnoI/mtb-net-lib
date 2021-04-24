@@ -67,4 +67,4 @@ void DaemonClient::tKeepAliveTick() {
 		this->send({});
 }
 
-}; // namespace MtbNetLib
+} // namespace MtbNetLib

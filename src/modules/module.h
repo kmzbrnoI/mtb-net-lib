@@ -71,6 +71,6 @@ public:
 	virtual size_t outputsCount() const { return 0; }
 };
 
-}; // namespace MtbNetLib
+} // namespace MtbNetLib
 
 #endif

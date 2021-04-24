@@ -35,6 +35,6 @@ public:
 	size_t outputsCount() const override;
 };
 
-}; // namespace MtbNetLib
+} // namespace MtbNetLib
 
 #endif

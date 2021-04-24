@@ -163,4 +163,4 @@ void LibMain::daemonReceivedMtbUsb(const QJsonObject& json) {
 	}
 }
 
-}; // MtbNetLib
+} // MtbNetLib

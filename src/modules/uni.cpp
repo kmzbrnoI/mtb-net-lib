@@ -123,4 +123,4 @@ void MtbUni::resetState() {
 size_t MtbUni::inputsCount() const { return UNI_IO_CNT; }
 size_t MtbUni::outputsCount() const { return UNI_IO_CNT; }
 
-}; // namespace MtbNetLib
+} // namespace MtbNetLib

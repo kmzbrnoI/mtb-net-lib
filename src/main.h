@@ -79,6 +79,6 @@ extern Settings settings;
 extern State state;
 extern LibMain libMain;
 
-}; // namespace MtbNetLib
+} // namespace MtbNetLib
 
 #endif

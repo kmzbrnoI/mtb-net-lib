@@ -4,4 +4,4 @@ namespace MtbNetLib {
 
 RcsEvents events;
 
-}; // namespace MtbNetLib
+} // namespace MtbNetLib
