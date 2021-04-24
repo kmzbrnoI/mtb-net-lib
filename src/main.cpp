@@ -113,7 +113,8 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 
 		if (state.rcs == RcsState::opening) {
 			log("Got modules", LogLevel::Info);
-			events.call(events.afterOpen);
+			state.rcs = RcsState::stopped;
+			events.call(events.afterOpen);			
 		}
 
 	} else if (command == "module_inputs_changed") {
