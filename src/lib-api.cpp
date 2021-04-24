@@ -1,4 +1,5 @@
 #include <QHostAddress>
+#include <QFile>
 #include "lib-api.h"
 #include "errors.h"
 #include "main.h"
@@ -100,19 +101,27 @@ bool Started() {
 // Config
 
 int LoadConfig(char16_t *filename) {
-	if (!daemonClient.connected() || mtbusb.connected)
+	if (daemonClient.connected())
 		return RCS_FILE_DEVICE_OPENED;
+
 	try {
-		settings.load(QString::fromUtf16(filename));
+		const QString& qfilename = QString::fromUtf16(filename);
+		if (QFile::exists(qfilename)) {
+			settings.load(qfilename);
+		} else {
+			log("Configuration file does not exist, creating...", LogLevel::Info);
+			settings.save(qfilename); // save default config
+		}
+		return 0;
 	} catch (...) { return RCS_FILE_CANNOT_ACCESS; }
-	return 0;
+
 }
 
 int SaveConfig(char16_t *filename) {
 	try {
 		settings.save(QString::fromUtf16(filename));
-	} catch (...) { return RCS_FILE_CANNOT_ACCESS; }
-	return 0;
+		return 0;
+	} catch (...) { return RCS_FILE_CANNOT_ACCESS; }	
 }
 
 void SetConfigFileName(char16_t *filename) { (void)filename; }
