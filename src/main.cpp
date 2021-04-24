@@ -122,6 +122,12 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 		if (modules[addr] != nullptr)
 			modules[addr]->daemonOutputsChanged(moduleOutputsChanged);
 
+	} else if (command == "module_set_outputs") {
+		const QJsonObject& outputs = json["outputs"].toObject();
+		size_t addr = json["address"].toInt();
+		if (modules[addr] != nullptr)
+			modules[addr]->daemonOutputsSet(outputs);
+
 	}
 }
 

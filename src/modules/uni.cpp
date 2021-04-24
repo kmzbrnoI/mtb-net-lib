@@ -24,13 +24,13 @@ void MtbUni::daemonGotInfo(const QJsonObject& json) {
 	}
 }
 
-void MtbUni::daemonInputsChanged(const QJsonObject&) {
+void MtbUni::daemonInputsChanged(const QJsonObject& json) {
 }
 
-void MtbUni::daemonOutputsChanged(const QJsonObject&) {
+void MtbUni::daemonOutputsChanged(const QJsonObject& json) {
 }
 
-void MtbUni::daemonOutputsSet(const QJsonObject&) {
+void MtbUni::daemonOutputsSet(const QJsonObject& json) {
 }
 
 /* RCS events --------------------------------------------------------------- */
