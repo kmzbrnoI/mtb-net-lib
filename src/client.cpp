@@ -10,7 +10,7 @@ DaemonClient::DaemonClient(QObject *parent) : QObject(parent) {
 	QObject::connect(&m_socket, SIGNAL(connected()), this, SLOT(clientConnected()));
 	QObject::connect(&m_socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
 	QObject::connect(&m_socket, SIGNAL(readyRead()), this, SLOT(clientReadyRead()));
-	QObject::connect(&m_socket, SIGNAL(errorOccured(QAbstractSocket::SocketError)),
+	QObject::connect(&m_socket, SIGNAL(error(QAbstractSocket::SocketError)),
 	                 this, SLOT(clientErrorOccured(QAbstractSocket::SocketError)));
 }
 
