@@ -10,7 +10,7 @@
  * library back to the hJOPserver.
  */
 
-namespace RcsXn {
+namespace MtbNetLib {
 
 using StdNotifyEvent = void CALL_CONV (*)(const void *sender, const void *data);
 using StdLogEvent = void CALL_CONV (*)(const void *sender, const void *data, int loglevel,
@@ -68,6 +68,8 @@ struct RcsEvents {
 		event.data = data;
 	}
 };
+
+extern RcsEvents events;
 
 } // namespace RcsXn
 
