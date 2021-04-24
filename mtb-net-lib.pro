@@ -5,9 +5,17 @@ CONFIG -= app_bundle
 
 SOURCES += \
 	src/main.cpp
+	src/lib-api.cpp
+	src/settings.cpp
 
 HEADERS += \
 	src/main.h
+	src/lib-api-common-def.h
+	src/lib-api.h
+	src/errors.h
+	src/events.h
+	src/util.h
+	src/settings.h
 
 CONFIG += c++17 dll
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -std=c++17
