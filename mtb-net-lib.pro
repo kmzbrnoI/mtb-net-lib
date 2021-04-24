@@ -7,7 +7,8 @@ SOURCES += \
 	src/main.cpp \
 	src/settings.cpp \
 	src/events.cpp \
-	src/client.cpp
+	src/client.cpp \
+	src/modules/uni.cpp
 
 HEADERS += \
 	src/main.h \
@@ -17,7 +18,9 @@ HEADERS += \
 	src/events.h \
 	src/util.h \
 	src/settings.h \
-	src/client.h
+	src/client.h \
+	src/modules/module.h \
+	src/modules/uni.h
 
 CONFIG += c++17 dll
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -std=c++17

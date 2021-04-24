@@ -35,9 +35,12 @@ void DaemonClient::clientDisconnected() {
 	this->m_tKeepAlive.stop();
 	// client->deleteLater();
 
-	/*for (size_t i = 0; i < Mtb::_MAX_MODULES; i++)
-		if (modules[i] != nullptr)
-			modules[i]->clientDisconnected(client);*/
+	for (size_t i = 0; i < MAX_MODULES; i++) {
+		if (modules[i] != nullptr) {
+			modules[i]->resetState();
+			modules[i]->resetConfig();
+		}
+	}
 }
 
 void DaemonClient::clientReadyRead() {

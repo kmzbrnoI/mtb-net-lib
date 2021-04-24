@@ -2,6 +2,9 @@
 #define MAIN_H
 
 #include <QCoreApplication>
+#include <memory>
+#include "modules/module.h"
+#include "client.h"
 
 namespace MtbNetLib {
 
@@ -36,6 +39,8 @@ struct AppThread {
 
 extern AppThread main_thread;
 extern State state;
+extern std::array<std::unique_ptr<MtbModule>, MAX_MODULES> modules;
+extern DaemonClient daemonClient;
 
 
 }; // namespace MtbNetLib
