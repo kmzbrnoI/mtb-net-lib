@@ -1,23 +1,27 @@
 hJOP MTB Network RCS Library
 ============================
 
-TODO
+This repository contains library intended to be compiled into Windows `dll`
+file and linked to [hJOPserver](https://github.com/kmzbrnoI/hJOPserver) as [RCS
+library](https://hjop.kmz-brno.cz/rcs). It connects to hJOP on one side and
+to [MTB daemon JSON server](https://github.com/kmzbrnoI/mtb-daemon) on the
+other side. The library allows to connect hJOP with MTBbus.
 
 ## Building & toolkit
 
-This library was developed in `vim` using `qmake` & `make`. It is suggested
-to use `clang` as a compiler, because then you may use `clang-tools` (see below).
+This library was developed in `vim` using `qmake` & `make`. For `clang-tidy` to
+run, it is suggested to use `clang` as a compiler. Library is assumed to be
+compiled on Windows to produce `dll` file.
 
 ### Prerequisities
 
  * Qt 5
- * Qt's `serialport`
  * [Bear](https://github.com/rizsotto/Bear)
 
 ### Toolchain setup on debian
 
 ```bash
-$ apt install qt5-default libqt5serialport5-dev
+$ apt install qt5-default
 $ apt install bear
 $ apt install clang-7 clang-tools-7 clang-tidy-7 clang-format-7
 ```
