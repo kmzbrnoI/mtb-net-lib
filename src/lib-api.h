@@ -19,9 +19,9 @@ extern unsigned int rcs_api_version;
 
 extern "C" {
 
-Q_DECL_EXPORT int CALL_CONV LoadConfig(char16_t *filename);
+Q_DECL_EXPORT int CALL_CONV LoadConfig(char16_t const *filename);
 Q_DECL_EXPORT int CALL_CONV SaveConfig(char16_t *filename);
-Q_DECL_EXPORT void CALL_CONV SetConfigFileName(char16_t *filename);
+Q_DECL_EXPORT void CALL_CONV SetConfigFileName(char16_t const *filename);
 
 Q_DECL_EXPORT void CALL_CONV SetLogLevel(unsigned int loglevel);
 Q_DECL_EXPORT unsigned int CALL_CONV GetLogLevel();
@@ -86,6 +86,6 @@ Q_DECL_EXPORT void CALL_CONV BindOnScanned(StdNotifyEvent f, void *data);
 
 } // extern C
 
-} // namespace RcsXn
+} // namespace MtbNetLib
 
 #endif

@@ -71,6 +71,6 @@ struct RcsEvents {
 
 extern RcsEvents events;
 
-} // namespace RcsXn
+} // namespace MtbNetLib
 
 #endif

@@ -38,6 +38,6 @@ signals:
 
 };
 
-} // namespaec MtbNetLib
+} // namespace MtbNetLib
 
 #endif

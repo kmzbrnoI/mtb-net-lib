@@ -48,7 +48,7 @@ struct AppThread {
 	AppThread() {
 		if (qApp == nullptr) {
 			int argc = 0;
-			QCoreApplication* app = new QCoreApplication(argc, nullptr);
+			auto* app = new QCoreApplication(argc, nullptr);
 			QMetaObject::invokeMethod(qApp, "quit", Qt::QueuedConnection);
 			app->exec();
 		}

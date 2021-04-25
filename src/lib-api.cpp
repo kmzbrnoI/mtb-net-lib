@@ -35,7 +35,7 @@ int Open() {
 	}
 }
 
-int OpenDevice(char16_t *device, bool persist) {
+int OpenDevice(char16_t const *device, bool persist) {
 	// Intentionally unimplemented
 	(void)device;
 	(void)persist;
@@ -121,10 +121,10 @@ int SaveConfig(char16_t *filename) {
 	try {
 		settings.save(QString::fromUtf16(filename));
 		return 0;
-	} catch (...) { return RCS_FILE_CANNOT_ACCESS; }	
+	} catch (...) { return RCS_FILE_CANNOT_ACCESS; }
 }
 
-void SetConfigFileName(char16_t *filename) { (void)filename; }
+void SetConfigFileName(char16_t const *filename) { (void)filename; }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Loglevel
@@ -320,4 +320,4 @@ void BindOnScanned(StdNotifyEvent f, void *data) { events.bind(events.onScanned,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-} // namespace RcsXn
+} // namespace MtbNetLib

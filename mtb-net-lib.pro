@@ -1,7 +1,5 @@
 TARGET = mtb-net-lib
 TEMPLATE = lib
-CONFIG += console
-CONFIG -= app_bundle
 
 SOURCES += \
 	src/main.cpp \
