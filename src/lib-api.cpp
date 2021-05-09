@@ -35,15 +35,6 @@ int Open() {
 	}
 }
 
-int OpenDevice(char16_t const *device, bool persist) {
-	// Intentionally unimplemented
-	(void)device;
-	(void)persist;
-	try {
-		return 0;
-	} catch (...) { return RCS_GENERAL_EXCEPTION; }
-}
-
 int Close() {
 	if (state.rcs == RcsState::closed)
 		return RCS_NOT_OPENED;
@@ -124,8 +115,6 @@ int SaveConfig(char16_t *filename) {
 	} catch (...) { return RCS_FILE_CANNOT_ACCESS; }
 }
 
-void SetConfigFileName(char16_t const *filename) { (void)filename; }
-
 ///////////////////////////////////////////////////////////////////////////////
 // Loglevel
 
@@ -168,10 +157,6 @@ int SetOutput(unsigned int module, unsigned int port, int _state) {
 	} catch (...) { return RCS_GENERAL_EXCEPTION; }
 }
 
-bool IsSimulation() { return false; }
-
-int SetInput(unsigned int, unsigned int, int) { return 0; }
-
 int GetInputType(unsigned int module, unsigned int port) {
 	if ((module >= MAX_MODULES) || (modules[module] == nullptr))
 		return RCS_MODULE_INVALID_ADDR;
@@ -188,17 +173,6 @@ int GetOutputType(unsigned int module, unsigned int port) {
 	try {
 		return modules[module]->rcsGetOutputType(port);
 	} catch (...) { return RCS_GENERAL_EXCEPTION; }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Devices
-
-int GetDeviceCount() { return 1; }
-
-void GetDeviceSerial(int index, char16_t *serial, unsigned int serialLen) {
-	(void)index;
-	const QString sname = "MTB-USB";
-	StrUtil::strcpy<char16_t>(reinterpret_cast<const char16_t *>(sname.utf16()), serial, serialLen);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
