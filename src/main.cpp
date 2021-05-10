@@ -70,6 +70,11 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 		const QJsonObject& error = json["error"].toObject();
 		log("Got error response for command '"+command+"': "+error["message"].toString(),
 		    LogLevel::Warning);
+		if (state.rcs == RcsState::opening) {
+			state.rcs = RcsState::closed;
+			events.call(events.onError, RCS_GENERAL_EXCEPTION, 0, "Got error response from MTB Daemon");
+			events.call(events.afterClose);
+		}
 		return;
 	}
 
@@ -153,7 +158,10 @@ void LibMain::daemonReceivedMtbUsb(const QJsonObject& json) {
 	}
 	if ((!old.connected) && (mtbusb.connected)) {
 		log("Connected to MTB-USB", LogLevel::Info);
-		if (state.rcs == RcsState::opening) {
+	}
+
+	if (state.rcs == RcsState::opening) {
+		if (mtbusb.connected) {
 			// If not opening, module state is received via module event
 			log("Getting modules info...", LogLevel::Info);
 			daemonClient.send(QJsonObject{
@@ -161,6 +169,10 @@ void LibMain::daemonReceivedMtbUsb(const QJsonObject& json) {
 				{"type", "request"},
 				{"state", true},
 			});
+		} else {
+			state.rcs = RcsState::closed;
+			events.call(events.onError, RCS_NOT_OPENED, 0, "MTB Daemon not connected to MTB-USB");
+			events.call(events.afterClose);
 		}
 	}
 }
