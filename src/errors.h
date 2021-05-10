@@ -8,12 +8,10 @@ constexpr size_t RCS_FILE_CANNOT_ACCESS = 1010;
 constexpr size_t RCS_FILE_DEVICE_OPENED = 1011;
 
 constexpr size_t RCS_MODULE_INVALID_ADDR = 1100;
-constexpr size_t RCS_MODULE_FAILED = 1102;
-constexpr size_t RCS_PORT_INVALID_NUMBER = 1103;
 constexpr size_t RCS_MODULE_UNKNOWN_TYPE = 1104;
 constexpr size_t RCS_INVALID_SPEED = 1105;
-constexpr size_t RCS_INVALID_SCOM_CODE = 1106;
-constexpr size_t RCS_INVALID_MODULES_COUNT = 1107;
+constexpr size_t RCS_PORT_INVALID_NUMBER = 1103;
+constexpr size_t RCS_PORT_INVALID_VALUE = 1106;
 constexpr size_t RCS_INPUT_NOT_YET_SCANNED = 1108;
 constexpr size_t RCS_MODULE_ALREADY_WRITING = 1110;
 
@@ -33,7 +31,7 @@ constexpr size_t RCS_MODULE_CONFIG_SETTING = 3112;
 constexpr size_t RCS_MODULE_REBOOTING = 3113;
 constexpr size_t RCS_MODULE_FWUPGD_ERROR = 3114;
 
-constexpr size_t RCS_MODULE_FAIL = 3141;
+constexpr size_t RCS_MODULE_FAILED = 3141;
 constexpr size_t RCS_MODULE_RESTORED = 3142;
 
 // Codes directly from RCS-USB errors
