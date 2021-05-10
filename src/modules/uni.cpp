@@ -29,15 +29,17 @@ void MtbUni::daemonGotInfo(const QJsonObject& json) {
 	}
 
 	// Must be here after setting all the attributes, because server can directly ask for this information
-	if ((oldState != "active") && (this->state == "active")) {
-		events.call(events.onError, RCS_MODULE_RESTORED, this->address, "Module activated");
-		events.call(events.onInputChanged, this->address);
-		events.call(events.onOutputChanged, this->address);
-	}
-	if ((oldState == "active") && (this->state != "active")) {
-		events.call(events.onError, RCS_MODULE_FAILED, this->address, "Module failed");
-		events.call(events.onInputChanged, this->address);
-		events.call(events.onOutputChanged, this->address);
+	if (MtbNetLib::state.rcs >= MtbNetLib::RcsState::stopped) {
+		if ((oldState != "active") && (this->state == "active")) {
+			events.call(events.onError, RCS_MODULE_RESTORED, this->address, "Module activated");
+			events.call(events.onInputChanged, this->address);
+			events.call(events.onOutputChanged, this->address);
+		}
+		if ((oldState == "active") && (this->state != "active")) {
+			events.call(events.onError, RCS_MODULE_FAILED, this->address, "Module failed");
+			events.call(events.onInputChanged, this->address);
+			events.call(events.onOutputChanged, this->address);
+		}
 	}
 }
 
