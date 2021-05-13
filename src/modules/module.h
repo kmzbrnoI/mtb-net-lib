@@ -68,7 +68,8 @@ public:
 	virtual int rcsGetOutputType(unsigned int port) { (void)port; return 0; }
 
 	virtual void resetConfig() {}
-	virtual void resetState() {}
+	virtual void resetOutputsState() {}
+	virtual void resetInputsState() {}
 
 	virtual size_t inputsCount() const { return 0; }
 	virtual size_t outputsCount() const { return 0; }

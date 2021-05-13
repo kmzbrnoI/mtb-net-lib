@@ -79,7 +79,13 @@ int Stop() {
 	try {
 		events.call(events.beforeStop);
 		state.rcs = RcsState::stopped;
-		events.call(events.afterStop);
+		for (size_t i = 0; i < MAX_MODULES; i++)
+			if (modules[i] != nullptr)
+				modules[i]->resetOutputsState();
+		daemonClient.send(QJsonObject{
+			{"command", "reset_my_outputs"},
+			{"type", "request"},
+		});
 		return 0;
 	} catch (...) { return RCS_GENERAL_EXCEPTION; }
 }

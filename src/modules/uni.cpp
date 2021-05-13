@@ -143,10 +143,14 @@ void MtbUni::resetConfig() {
 	this->config = {};
 }
 
-void MtbUni::resetState() {
-	this->inputs = 0;
+void MtbUni::resetOutputsState() {
+	const QJsonArray& safeState = this->config["outputsSafe"].toArray();
 	for (size_t i = 0; i < UNI_IO_CNT; i++)
-		this->outputsConfirmed[i] = {};
+		this->outputsConfirmed[i] = safeState[i].toObject();
+}
+
+void MtbUni::resetInputsState() {
+	this->inputs = 0;
 }
 
 void MtbUni::restoreOutputs() const {

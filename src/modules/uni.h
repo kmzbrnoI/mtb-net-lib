@@ -32,7 +32,8 @@ public:
 	int rcsGetOutputType(unsigned int port) override;
 
 	void resetConfig() override;
-	void resetState() override;
+	void resetOutputsState() override;
+	void resetInputsState() override;
 
 	size_t inputsCount() const override;
 	size_t outputsCount() const override;

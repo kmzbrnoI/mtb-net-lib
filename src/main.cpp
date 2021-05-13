@@ -66,6 +66,9 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 	const QString command = json["command"].toString();
 	const QString type = json["type"].toString();
 
+	if ((json["type"].toString() == "response") && (json["command"] == "reset_my_outputs"))
+		events.call(events.afterStop);
+
 	if ((json["type"].toString() == "response") && (json["status"].toString() != "ok")) {
 		const QJsonObject& error = json["error"].toObject();
 		log("Got error response for command '"+command+"': "+error["message"].toString(),
@@ -152,9 +155,12 @@ void LibMain::daemonReceivedMtbUsb(const QJsonObject& json) {
 		log("Disconnected from MTB-USB!", LogLevel::Error);
 		state.rcs = RcsState::stopped;
 		events.call(events.afterStop);
-		for (size_t i = 0; i < MAX_MODULES; i++)
-			if (modules[i] != nullptr)
-				modules[i]->resetState();
+		for (size_t i = 0; i < MAX_MODULES; i++) {
+			if (modules[i] != nullptr) {
+				modules[i]->resetInputsState();
+				modules[i]->resetOutputsState();
+			}
+		}
 	}
 	if ((!old.connected) && (mtbusb.connected)) {
 		log("Connected to MTB-USB", LogLevel::Info);
