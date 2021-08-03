@@ -86,8 +86,12 @@ int MtbUni::rcsSetOutput(unsigned int port, int state) {
 	if (this->state != "active")
 		return RCS_MODULE_FAILED;
 
-	if (this->outputsConfirmed[port]["value"].toInt() == state)
-		return 0;
+	/* This code is intentionally commented-out!
+	 * One cannot check state against confirmed state, because there can be
+	 * SetOutput pending!
+	 * if (this->outputsConfirmed[port]["value"].toInt() == state)
+	 *     return 0;
+	 */
 
 	QJsonArray outputsSafe = this->config["outputsSafe"].toArray();
 	if (static_cast<int>(port) >= outputsSafe.size())
