@@ -37,6 +37,8 @@ public:
 	QString type_str;
 	bool bootloader_int;
 	bool bootlaoder_error;
+	bool error;
+	bool warning;
 	QString fw_version;
 	QString proto_version;
 	QString bootloader_version;
@@ -54,6 +56,8 @@ public:
 		this->type_str = json["type"].toString();
 		this->bootloader_int = json["bootloader_intentional"].toBool();
 		this->bootlaoder_error = json["bootloader_error"].toBool();
+		this->error = json["error"].toBool();
+		this->warning = json["warning"].toBool();
 		this->fw_version = json["firmware_version"].toString();
 		this->proto_version = json["protocol_version"].toString();
 		this->bootloader_version = json["bootloader_version"].toString();

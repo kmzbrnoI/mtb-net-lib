@@ -233,6 +233,42 @@ int GetModuleFW(unsigned int module, char16_t *fw, unsigned int fwLen) {
 	return 0;
 }
 
+unsigned int GetModuleInputsCount(unsigned int module) {
+	if ((module >= MAX_MODULES) || (modules[module] == nullptr))
+		return RCS_MODULE_INVALID_ADDR;
+
+	try {
+		return modules[module]->inputsCount();
+	} catch (...) { return RCS_GENERAL_EXCEPTION; }
+}
+
+unsigned int GetModuleOutputsCount(unsigned int module) {
+	if ((module >= MAX_MODULES) || (modules[module] == nullptr))
+		return RCS_MODULE_INVALID_ADDR;
+
+	try {
+		return modules[module]->outputsCount();
+	} catch (...) { return RCS_GENERAL_EXCEPTION; }
+}
+
+bool IsModuleError(unsigned int module) {
+	if ((module >= MAX_MODULES) || (modules[module] == nullptr))
+		return false;
+
+	try {
+		return modules[module]->error;
+	} catch (...) { return RCS_GENERAL_EXCEPTION; }
+}
+
+bool IsModuleWarning(unsigned int module) {
+	if ((module >= MAX_MODULES) || (modules[module] == nullptr))
+		return false;
+
+	try {
+		return modules[module]->warning;
+	} catch (...) { return RCS_GENERAL_EXCEPTION; }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Versions
 
@@ -261,27 +297,6 @@ unsigned int GetDriverVersion(char16_t *version, unsigned int versionLen) {
 	StrUtil::strcpy<char16_t>(reinterpret_cast<const char16_t *>(sversion.utf16()), version,
 	                          versionLen);
 	return 0;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// General library configuration
-
-unsigned int GetModuleInputsCount(unsigned int module) {
-	if ((module >= MAX_MODULES) || (modules[module] == nullptr))
-		return RCS_MODULE_INVALID_ADDR;
-
-	try {
-		return modules[module]->inputsCount();
-	} catch (...) { return RCS_GENERAL_EXCEPTION; }
-}
-
-unsigned int GetModuleOutputsCount(unsigned int module) {
-	if ((module >= MAX_MODULES) || (modules[module] == nullptr))
-		return RCS_MODULE_INVALID_ADDR;
-
-	try {
-		return modules[module]->outputsCount();
-	} catch (...) { return RCS_GENERAL_EXCEPTION; }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -51,6 +51,8 @@ Q_DECL_EXPORT int CALL_CONV GetModuleFW(unsigned int module, char16_t *fw,
                                                unsigned int fwLen);
 Q_DECL_EXPORT unsigned int CALL_CONV GetModuleInputsCount(unsigned int module);
 Q_DECL_EXPORT unsigned int CALL_CONV GetModuleOutputsCount(unsigned int module);
+Q_DECL_EXPORT bool CALL_CONV IsModuleError(unsigned int module);
+Q_DECL_EXPORT bool CALL_CONV IsModuleWarning(unsigned int module);
 
 Q_DECL_EXPORT bool CALL_CONV ApiSupportsVersion(unsigned int version);
 Q_DECL_EXPORT int CALL_CONV ApiSetVersion(unsigned int version);
