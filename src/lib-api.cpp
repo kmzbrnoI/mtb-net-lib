@@ -296,12 +296,14 @@ void BindBeforeStart(StdNotifyEvent f, void *data) { events.bind(events.beforeSt
 void BindAfterStart(StdNotifyEvent f, void *data) { events.bind(events.afterStart, f, data); }
 void BindBeforeStop(StdNotifyEvent f, void *data) { events.bind(events.beforeStop, f, data); }
 void BindAfterStop(StdNotifyEvent f, void *data) { events.bind(events.afterStop, f, data); }
+
 void BindOnError(StdErrorEvent f, void *data) { events.bind(events.onError, f, data); }
 void BindOnLog(StdLogEvent f, void *data) { events.bind(events.onLog, f, data); }
+void BindOnScanned(StdNotifyEvent f, void *data) { events.bind(events.onScanned, f, data); }
 
 void BindOnInputChanged(StdModuleChangeEvent f, void *data) { events.bind(events.onInputChanged, f, data); }
 void BindOnOutputChanged(StdModuleChangeEvent f, void *data) { events.bind(events.onOutputChanged, f, data); }
-void BindOnScanned(StdNotifyEvent f, void *data) { events.bind(events.onScanned, f, data); }
+void BindOnModuleChanged(StdModuleChangeEvent f, void *data) { events.bind(events.onModuleChanged, f, data); }
 
 ///////////////////////////////////////////////////////////////////////////////
 

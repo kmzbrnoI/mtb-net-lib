@@ -11,8 +11,8 @@
 
 namespace MtbNetLib {
 
-constexpr std::array<unsigned int, 2> API_SUPPORTED_VERSIONS {
-    0x0301, 0x0401 // v1.3, v1.4
+constexpr std::array<unsigned int, 6> API_SUPPORTED_VERSIONS {
+    0x0301, 0x0401, 0x0501, // v1.3, v1.4, v1.5
 };
 
 extern unsigned int rcs_api_version;
@@ -71,9 +71,12 @@ Q_DECL_EXPORT void CALL_CONV BindAfterStop(StdNotifyEvent f, void *data);
 
 Q_DECL_EXPORT void CALL_CONV BindOnError(StdErrorEvent f, void *data);
 Q_DECL_EXPORT void CALL_CONV BindOnLog(StdLogEvent f, void *data);
+Q_DECL_EXPORT void CALL_CONV BindOnScanned(StdNotifyEvent f, void *data);
+
 Q_DECL_EXPORT void CALL_CONV BindOnInputChanged(StdModuleChangeEvent f, void *data);
 Q_DECL_EXPORT void CALL_CONV BindOnOutputChanged(StdModuleChangeEvent f, void *data);
-Q_DECL_EXPORT void CALL_CONV BindOnScanned(StdNotifyEvent f, void *data);
+Q_DECL_EXPORT void CALL_CONV BindOnModuleChanged(StdModuleChangeEvent f, void *data);
+
 
 } // extern C
 

@@ -28,7 +28,10 @@ void MtbUni::daemonGotInfo(const QJsonObject& json) {
 		this->inputs = state["inputsPacked"].toInt();
 	}
 
-	// Must be here after setting all the attributes, because server can directly ask for this information
+	// Must be here after setting all the attributes,
+	// because hJOP can directly ask for module information
+	events.call(events.onModuleChanged, this->address);
+
 	if (MtbNetLib::state.rcs >= MtbNetLib::RcsState::stopped) {
 		if ((oldState != "active") && (this->state == "active")) {
 			events.call(events.onError, RCS_MODULE_RESTORED, this->address, "Module activated");
