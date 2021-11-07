@@ -224,7 +224,12 @@ int GetModuleFW(unsigned int module, char16_t *fw, unsigned int fwLen) {
 	if ((module >= MAX_MODULES) || (modules[module] == nullptr))
 		return RCS_MODULE_INVALID_ADDR;
 
-	StrUtil::strcpy<char16_t>(reinterpret_cast<const char16_t *>(modules[module]->fw_version.utf16()), fw, fwLen);
+	StrUtil::strcpy<char16_t>(
+		reinterpret_cast<const char16_t *>(
+			(modules[module]->fw_version + " (B:" + modules[module]->bootloader_version + ")").utf16()
+		),
+		fw,
+		fwLen);
 	return 0;
 }
 

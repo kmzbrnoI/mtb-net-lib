@@ -39,6 +39,7 @@ public:
 	bool bootlaoder_error;
 	QString fw_version;
 	QString proto_version;
+	QString bootloader_version;
 
 	MtbModule() = default;
 	MtbModule(const QJsonObject& json) { this->daemonGotInfo(json); };
@@ -55,6 +56,7 @@ public:
 		this->bootlaoder_error = json["bootloader_error"].toBool();
 		this->fw_version = json["firmware_version"].toString();
 		this->proto_version = json["protocol_version"].toString();
+		this->bootloader_version = json["bootloader_version"].toString();
 	}
 
 	virtual void daemonInputsChanged(const QJsonObject&) {}

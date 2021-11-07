@@ -1,7 +1,7 @@
 #ifndef LIB_API_H
 #define LIB_API_H
 
-/* This file deafines prototypes of library API functions. */
+/* This file defines prototypes of library API functions. */
 
 #include <array>
 #include <QtCore/QtGlobal>
