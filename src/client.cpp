@@ -31,20 +31,20 @@ bool DaemonClient::connected() const {
 }
 
 void DaemonClient::clientConnected() {
-	onConnected();
+    emit onConnected();
 }
 
 void DaemonClient::clientDisconnected() {
 	this->m_tKeepAlive.stop();
 	// client->deleteLater();
-	onDisconnected();
+    emit onDisconnected();
 }
 
 void DaemonClient::clientErrorOccured(QAbstractSocket::SocketError) {
 	log("Daemon server socket error occured: "+m_socket.errorString(), LogLevel::Error);
 	if (this->connected())
 		this->disconnect();
-	onDisconnected();
+    emit onDisconnected();
 }
 
 void DaemonClient::clientReadyRead() {
@@ -52,7 +52,7 @@ void DaemonClient::clientReadyRead() {
 		QByteArray data = this->m_socket.readLine();
 		if (data.size() > 0) {
 			QJsonObject json = QJsonDocument::fromJson(data).object();
-			jsonReceived(json);
+            emit jsonReceived(json);
 		}
 	}
 }
