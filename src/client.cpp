@@ -11,8 +11,14 @@ DaemonClient::DaemonClient(QObject *parent) : QObject(parent) {
 	QObject::connect(&m_socket, SIGNAL(connected()), this, SLOT(clientConnected()));
 	QObject::connect(&m_socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
 	QObject::connect(&m_socket, SIGNAL(readyRead()), this, SLOT(clientReadyRead()));
-    QObject::connect(&m_socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
+
+#if QT_VERSION < 0x060000
+	QObject::connect(&m_socket, SIGNAL(error(QAbstractSocket::SocketError)),
+					 this, SLOT(clientErrorOccured(QAbstractSocket::SocketError)));
+#else
+	QObject::connect(&m_socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	                 this, SLOT(clientErrorOccured(QAbstractSocket::SocketError)));
+#endif
 }
 
 void DaemonClient::connect(const QHostAddress &addr, quint16 port, bool keepAlive) {
