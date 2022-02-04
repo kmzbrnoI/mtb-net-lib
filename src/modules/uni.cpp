@@ -16,6 +16,8 @@ void MtbUni::daemonGotInfo(const QJsonObject& json) {
 	this->ir = uniJson["ir"].toBool();
 	if (uniJson.contains("config"))
 		this->config = uniJson["config"].toObject();
+	if (oldState == "")
+		this->resetOutputsState();
 	if ((oldState != "active") && (oldState != "") && (this->state == "active")) {
 		// Restore state of outputs
 		this->restoreOutputs();
