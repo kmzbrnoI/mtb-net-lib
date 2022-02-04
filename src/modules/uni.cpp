@@ -154,7 +154,7 @@ void MtbUni::resetConfig() {
 
 void MtbUni::resetOutputsState() {
 	const QJsonArray& safeState = this->config["outputsSafe"].toArray();
-	for (size_t i = 0; i < UNI_IO_CNT; i++)
+	for (size_t i = 0; i < std::min<size_t>(UNI_IO_CNT, safeState.size()); i++)
 		this->outputsConfirmed[i] = safeState[i].toObject();
 }
 
