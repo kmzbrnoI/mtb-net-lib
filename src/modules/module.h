@@ -26,6 +26,7 @@ enum MtbModuleType {
 	Univ2noIr = 0x11,
 	Univ40 = 0x15,
 	Univ42 = 0x16,
+	Unis10 = 0x50,
 };
 
 class MtbModule {
