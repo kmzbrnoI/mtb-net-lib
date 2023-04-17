@@ -2,6 +2,7 @@
 #include "main.h"
 #include "events.h"
 #include "modules/uni.h"
+#include "modules/unis.h"
 #include "errors.h"
 
 namespace MtbNetLib {
@@ -89,7 +90,9 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 		size_t addr = jsonModule["address"].toInt();
 		const QString& type = json["module"].toObject()["type"].toString();
 		if (modules[addr] == nullptr) {
-			if (type.startsWith("MTB-UNI"))
+			if (type.startsWith("MTB-UNIS"))
+				modules[addr] = std::make_unique<MtbUnis>();
+			else if (type.startsWith("MTB-UNI"))
 				modules[addr] = std::make_unique<MtbUni>();
 			else
 				modules[addr] = std::make_unique<MtbModule>();
@@ -103,7 +106,9 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 				const QJsonObject& jsonModule = jsonModules[QString::number(i)].toObject();
 				if (modules[i] == nullptr) {
 					const QString& type = jsonModule["type"].toString();
-					if (type.startsWith("MTB-UNI"))
+					if (type.startsWith("MTB-UNIS"))
+						modules[i] = std::make_unique<MtbUnis>();
+					else if (type.startsWith("MTB-UNI"))
 						modules[i] = std::make_unique<MtbUni>();
 					else
 						modules[i] = std::make_unique<MtbModule>();
