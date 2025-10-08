@@ -1,6 +1,8 @@
 #ifndef MODULE_MTB_UNI_H
 #define MODULE_MTB_UNI_H
 
+/* MTB-UNI and MTB-UNIS module */
+
 #include <vector>
 #include "module.h"
 
@@ -8,6 +10,7 @@ namespace MtbNetLib {
 
 constexpr size_t UNI_IN_CNT = 16;
 constexpr size_t UNI_OUT_CNT = 16;
+constexpr size_t UNIS_IN_CNT = 28;
 constexpr size_t UNIS_OUT_CNT = 28;
 
 class MtbUni : public MtbModule {
@@ -15,7 +18,7 @@ private:
 	void restoreOutputs() const;
 
 public:
-	uint16_t inputs;
+	uint32_t inputs;
 	std::vector<QJsonObject> outputsConfirmed;
 	QJsonObject config;
 	bool ir;

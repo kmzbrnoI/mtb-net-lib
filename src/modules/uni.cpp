@@ -136,7 +136,7 @@ int MtbUni::rcsGetInputType(unsigned int port) {
 		return RCS_PORT_INVALID_NUMBER;
 
 	if (this->config.contains("irsPacked")) {
-		uint16_t irs = this->config["irsPacked"].toInt();
+		int irs = this->config["irsPacked"].toInt();
 		irs >>= port;
 		if (irs & 1)
 			return static_cast<int>(RcsPortInputType::iIr);
@@ -185,7 +185,9 @@ void MtbUni::restoreOutputs() const {
 	});
 }
 
-size_t MtbUni::inputsCount() const { return UNI_IN_CNT; }
+size_t MtbUni::inputsCount() const {
+	return (this->type == MtbModuleType::Unis) ? UNIS_IN_CNT : UNI_IN_CNT;
+}
 
 size_t MtbUni::outputsCount() const {
 	return (this->type == MtbModuleType::Unis) ? UNIS_OUT_CNT : UNI_OUT_CNT;

@@ -1,6 +1,8 @@
 #ifndef MODULE_H
 #define MODULE_H
 
+/* General MTB module */
+
 #include <QTcpSocket>
 #include <QJsonObject>
 #include "../events.h"
