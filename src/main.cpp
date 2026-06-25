@@ -2,6 +2,7 @@
 #include "main.h"
 #include "events.h"
 #include "modules/uni.h"
+#include "modules/led.h"
 #include "errors.h"
 
 namespace MtbNetLib {
@@ -88,12 +89,8 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 		QJsonObject jsonModule = json["module"].toObject();
 		size_t addr = jsonModule["address"].toInt();
 		const QString& type = json["module"].toObject()["type"].toString();
-		if (modules[addr] == nullptr) {
-			if (type.startsWith("MTB-UNI"))
-				modules[addr] = std::make_unique<MtbUni>();
-			else
-				modules[addr] = std::make_unique<MtbModule>();
-		}
+		if (modules[addr] == nullptr)
+			modules[addr] = this->makeModule(type);
 		modules[addr]->daemonGotInfo(jsonModule);
 
 	} else if (command == "modules") {
@@ -101,13 +98,8 @@ void LibMain::daemonReceived(const QJsonObject& json) {
 		for (size_t i = 0; i < MAX_MODULES; i++) {
 			if (jsonModules.contains(QString::number(i))) {
 				const QJsonObject& jsonModule = jsonModules[QString::number(i)].toObject();
-				if (modules[i] == nullptr) {
-					const QString& type = jsonModule["type"].toString();
-					if (type.startsWith("MTB-UNI"))
-						modules[i] = std::make_unique<MtbUni>();
-					else
-						modules[i] = std::make_unique<MtbModule>();
-				}
+				if (modules[i] == nullptr)
+					modules[i] = this->makeModule(jsonModule["type"].toString());
 				modules[i]->daemonGotInfo(jsonModule);
 			} else  if (modules[i] != nullptr) {
 				modules[i] = nullptr; // TODO: send module failed event?
@@ -181,6 +173,14 @@ void LibMain::daemonReceivedMtbUsb(const QJsonObject& json) {
 			events.call(events.afterClose);
 		}
 	}
+}
+
+std::unique_ptr<MtbModule> LibMain::makeModule(const QString& type) {
+	if (type.startsWith("MTB-UNI"))
+		return std::make_unique<MtbUni>();
+	if (type == "MTB-LED")
+		return std::make_unique<MtbLed>();
+	return std::make_unique<MtbModule>();
 }
 
 } // namespace MtbNetLib

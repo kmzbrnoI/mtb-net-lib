@@ -60,6 +60,7 @@ class LibMain : public QObject {
 
 private:
 	void daemonReceivedMtbUsb(const QJsonObject&);
+	std::unique_ptr<MtbModule> makeModule(const QString& type);
 
 private slots:
 	void daemonConnected();

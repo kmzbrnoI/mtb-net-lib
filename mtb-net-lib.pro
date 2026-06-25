@@ -7,6 +7,7 @@ SOURCES += \
 	src/events.cpp \
 	src/client.cpp \
 	src/modules/uni.cpp \
+	src/modules/led.cpp \
 	src/lib-api.cpp
 
 HEADERS += \
@@ -19,7 +20,8 @@ HEADERS += \
 	src/settings.h \
 	src/client.h \
 	src/modules/module.h \
-	src/modules/uni.h
+	src/modules/uni.h \
+	src/modules/led.h
 
 CONFIG += c++17 dll
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -std=c++17
@@ -37,7 +39,7 @@ QT -= gui
 QT += core serialport network
 
 VERSION_MAJOR = 1
-VERSION_MINOR = 5
+VERSION_MINOR = 6
 
 DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR" "VERSION_MINOR=$$VERSION_MINOR"
 
