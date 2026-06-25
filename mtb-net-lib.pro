@@ -36,7 +36,7 @@ win64 {
 }
 
 QT -= gui
-QT += core serialport network
+QT += core network
 
 VERSION_MAJOR = 1
 VERSION_MINOR = 6
